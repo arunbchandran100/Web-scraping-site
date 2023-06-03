@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
-import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import "./Searchcard.css";
+import "../styles/Searchcard.css";
 
 function Card2() {
   return (
