@@ -40,7 +40,7 @@ export default function Navbar() {
             <a href="/home">Home</a>
           </li>
           <li>
-            <a href="/contact">Login / Create account</a>
+            <a href="/signup">Login / Create account</a>
           </li>
         </ul>
       </div>
