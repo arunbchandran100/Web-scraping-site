@@ -17,9 +17,15 @@ for listing in listings:
     details_button = listing.find("button", onclick=lambda x: x and "helperJS.goToURL" in x)
     link = details_button["onclick"].split("'")[1] if details_button else None
 
+    image_container = listing.find("div", class_="tileProjectImgBox thisss smArrow DSE_Resale_D17")
+    if image_container:
+        image_tags = image_container.find_all("img", class_="img-responsive bx-item lazy DSE_Resale_D17")
+        image_links = [img["data-src"] for img in image_tags]
+
     print("Title:", title)
     print("Price:", price)
     print("Location:", location)
-    print("Square Footage:", sq_foot)
     print("More details Link:", link)
+    print("Square Footage:", sq_foot)
+    print("Image Links:", image_links)
     print()
