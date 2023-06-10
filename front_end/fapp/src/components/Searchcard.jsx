@@ -1,19 +1,19 @@
-import React, { useRef } from "react";
+import React from "react";
 import Card from "react-bootstrap/Card";
 import "../styles/Searchcard.css";
 
 function Card2() {
   return (
     <div className="rechargephoto">
-      <form action=''classname='flex'>
-        <div classname='box'>
-          <span>City</span>
-            <input type='text'placeholder='City'/>
-            </div>
-        <div classname='box'>
-          <span>place</span>
-            <input type='text'placeholder='Place'/>
-            </div>
+      <h2 className="search-heading">Real estate search just a click away</h2> {/* Updated heading */}
+      <form action='' className='flex'>
+        <div className='box'>
+          <input type='text' placeholder='City' />
+        </div>
+        <div className='box'>
+          <input type='text' placeholder='Place' />
+        </div>
+        <button type="submit" className="search-button">Search</button>
       </form>
     </div>
   );
