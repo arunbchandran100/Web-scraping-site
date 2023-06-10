@@ -1,17 +1,18 @@
 .rechargephoto {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: flex-start;
+  flex-wrap: nowrap;
+  justify-content: normal;
+  align-items: center;
 }
 
 .rechargephoto-card {
   flex: 0 0 calc(50% - 20px);
   margin: 10px;
   max-width: 100%;
+  flex-wrap: nowrap;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: normal;
   border: 1px solid #ddd;
   border-radius: 5px;
   overflow: hidden;
