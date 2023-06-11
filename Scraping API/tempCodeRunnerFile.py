@@ -1,1 +1,0 @@
-https://www.99acres.com/search/property/buy/hyderabad?city=269&preference=S&area_unit=1&res_com=R
