@@ -19,4 +19,8 @@ from django.urls import path
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('nobroker',views.apicall_nobroker,name="nobroker"),
+    path('99acres',views.apicall_99acres,name="99acres"),
+    path('squareyards',views.apicall_squareyards,name="squareyards"),
+    
 ]
