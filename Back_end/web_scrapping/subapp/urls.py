@@ -16,11 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from subapp import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('nobroker',views.apicall_nobroker,name="nobroker"),
-    path('99acres',views.apicall_99acres,name="99acres"),
-    path('squareyards',views.apicall_squareyards,name="squareyards"),
-    
+    #path('',views.Homepage,name='Homepage'),
+    path('',views.index,name='index')
 ]

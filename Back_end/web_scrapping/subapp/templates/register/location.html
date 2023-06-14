@@ -1,0 +1,13 @@
+<div class="rechargephoto">
+  <h2 class="search-heading">Real estate search just a click away</h2>
+  <form action="" method='post'>
+    {% csrf_token %} 
+    <div class="box">
+      <input type="text" name="city" placeholder="City">
+    </div>
+    <div class="box">
+      <input type="text" name="place" placeholder="Place">
+    </div>
+    <button type="submit" class="search-button">Search</button>
+  </form>
+</div>

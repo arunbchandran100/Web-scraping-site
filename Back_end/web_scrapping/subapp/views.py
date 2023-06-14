@@ -1,6 +1,20 @@
 from django.shortcuts import render
+import requests
+from bs4 import BeautifulSoup
+# from .models import Homepage
 
-# Create your views here.
+def Homepage(request):
+    if request.method =='POST':
+        city = request.POST['city']
+        place = request.POST['place']
+        
+        print(city)
+        print(place)
+    return render(request, 'register/location.html',{})
+
+def index(request):
+    return render(request,'index.html')
+
 def apicall_nobroker(request):
 
     url = "https://www.nobroker.in/property/sale/chennai/Chennai%20Apollo?searchParam=W3sibGF0IjoxMi44NjA2MzUyLCJsb24iOjc5Ljk0NDU2ODEsInBsYWNlSWQiOiJDaElKZXpkeDRMN3hVam9SMHVuMXJlRkxBVmMiLCJwbGFjZU5hbWUiOiJDaGVubmFpIEFwb2xsbyIsInNob3dNYXAiOmZhbHNlfV0="
