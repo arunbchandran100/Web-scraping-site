@@ -1,7 +1,13 @@
 import requests
 from bs4 import BeautifulSoup
 
-url = "https://www.squareyards.com/sale/property-for-sale-in-hyderabad"
+city ="bangalore"
+locality ="south bangalore"
+
+city1 = city.replace(" ", "-")
+locality1 = locality.replace(" ", "-")
+
+url = f"https://www.squareyards.com/sale/property-for-sale-in-{locality1.lower()}-{city1.lower()}"
 
 response = requests.get(url)
 soup = BeautifulSoup(response.content, "html.parser")
