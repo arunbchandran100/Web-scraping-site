@@ -11,8 +11,7 @@ from selenium.webdriver.common.keys import Keys
 
 
 options = Options()
-options.headless = True
-options.add_argument('window-size=1200x800')
+options.headless = True 
 driver = webdriver.Chrome(options=options)
 
 city = "bangalore"

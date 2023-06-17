@@ -15,6 +15,9 @@ city = city.lower()
 locality = locality.lower()
 
 options = Options()
+options.headless = True
+options.add_argument('window-size=1200x800')
+driver = webdriver.Chrome(options=options)
 options.add_argument("--disable-notifications") 
 driver = webdriver.Chrome(options=options)
 
