@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'subapp',
+    'corsheaders',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -74,10 +77,14 @@ WSGI_APPLICATION = 'web_scrapping.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+	'default': {
+		'ENGINE': 'django.db.backends.mysql',
+		'NAME': 'real_estate',
+		'USER': 'root',
+		'PASSWORD': 'root',
+		'HOST':'localhost',
+		'PORT':'3306',
+	}
 }
 
 
@@ -99,7 +106,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+CORS_ORIGIN_WHILELIST = (
+    'http:///localhost:3000'
+)
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
