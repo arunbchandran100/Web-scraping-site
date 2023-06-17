@@ -8,20 +8,23 @@ export function Product(props) {
                 
 
                 <div className='productCard__content'>
-                    <h3 className='productName'>{props.name}</h3>
-                    <div className='displayStack__1'>
-                        <div className='productPrice'>{props.price} Lacs</div>
-                        <div className='productSales'>{props.totalSales} </div>
-                    </div>
-                    <div className='displayStack__2'>
-                        {/* <div className='productRating'>
-                            {[...Array(props.rating)].map((index) => (
-                                <FaStar id={index + 1 } key={index} />
-                            ))}
-                        </div> */}
-                        <div className='productTime'>{props.timeLeft} sq feet</div>
-                    </div>
-                </div>
+  <img src="https://images.nobroker.in/images/8a9fd8828760f801018760ffd9f8018c/8a9fd8828760f801018760ffd9f8018c_60330_508297_thumbnail.jpg" alt="Product Image" />
+  <h3 className='productName'>2 BHK House  For Sale  In Oragadam Industrial Corridor</h3>
+  <div className='displayStack__1'>
+    <div className='productPrice'>42 Lacs</div>
+    <div className='productSales'>7479</div>
+  </div>
+  <div className='displayStack__2'>
+    {/* <div className='productRating'>
+        {[...Array(5)].map((_, index) => (
+            <FaStar id={index + 1} key={index} />
+        ))}
+    </div> */}
+    <div className='productTime'>1000 sq feet</div>
+  </div>
+</div>
+
+
             </div>
         </div>
     )
