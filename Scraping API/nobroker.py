@@ -96,4 +96,3 @@ for listing in listings:
     print("More details Link:", link)
     print("Square Footage:", sq_foot)
     print("Image Links:", image_url)
-    print()
