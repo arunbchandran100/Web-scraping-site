@@ -38,18 +38,36 @@ import { HiBadgeCheck } from 'react-icons/hi'
 import { Avatar } from '@chakra-ui/react'
 import { FaBed, FaBath } from 'react-icons/fa'
 import { RiApps2Fill } from 'react-icons/ri'
-import DefaultImage from '../assets/images/house.jpg';
+import {DefaultImage} from '../assets/images/house';
 import Link from 'next/link';
 import "../styles/globals.css";
 
 
 const Property = ({ item }) => {
     const { rooms, bath, isVerified, agency: { logo }, price, title, rentFrequency, area, externalID } = item;
+//  let API = "";
+//  const  fetchApiData = async(url) =>{
+//     try{
+//         const res = await fetch(url);
+//         const data = await res.json();
+//         console.log(data);
+//     }
+//     catch(error)
+//     {
+//         console.log(error);
+//     }
+//     };
+//     useEffect(()=>
+//     {
+//         fetchApiData(API);
+    
+//     },[]);
+ 
     return (
         <Link href={`/property/${externalID}`} passHref>
             <Flex flexDirection="column" cursor="pointer">
                 <Box>
-                    <Image src={item.coverPhoto ? item.coverPhoto.url : DefaultImage} alt="bannerImage" width="450px" height="250px" />
+                    <Image src={item.coverPhoto ? item.coverPhoto.url : item.coverPhoto} alt="bannerImage" width="450px" height="250px" />
                 </Box>
 
                 <Box mt={1}>
