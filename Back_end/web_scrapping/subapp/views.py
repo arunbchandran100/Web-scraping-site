@@ -17,18 +17,76 @@ from rest_framework.response import Response
 class SubmitFormAPIView(APIView):
     def post(self, request):
         data = request.data
-        city = data.get('city')
+        locality = data.get('city')
         place = data.get('place')
-        print(city,place)
+        print(locality,place)
+        apicall_squareyards(locality,place)
+        apicall_99acres(locality,place)
+        apicall_nobroker(locality,place)
         # Return a JSON response
         return Response({'success': True, 'message': 'Form data submitted successfully.'})
 
 
-def apicall_nobroker(request):
+def apicall_nobroker(city,locality):
 
-    url = "https://www.nobroker.in/property/sale/chennai/Chennai%20Apollo?searchParam=W3sibGF0IjoxMi44NjA2MzUyLCJsb24iOjc5Ljk0NDU2ODEsInBsYWNlSWQiOiJDaElKZXpkeDRMN3hVam9SMHVuMXJlRkxBVmMiLCJwbGFjZU5hbWUiOiJDaGVubmFpIEFwb2xsbyIsInNob3dNYXAiOmZhbHNlfV0="
+    city = 'Pune'
+    locality = 'whitefield'
 
-    response = requests.get(url)
+    city = city.lower()
+    locality = locality.lower()
+
+    options = Options()
+    options.headless = True
+    options.add_argument('window-size=1200x800')
+    driver = webdriver.Chrome(options=options)
+    options.add_argument("--disable-notifications") 
+    driver = webdriver.Chrome(options=options)
+
+    url = "https://www.nobroker.in/"
+    driver.get(url)
+    driver.maximize_window()
+
+    rent_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/div/div[1]/div[3]/div[1]')))
+    rent_button.click()
+
+    dropdown_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "nb-select__control")))
+    dropdown_button.click()
+
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "nb-select__menu-list")))
+
+    cities = ['mumbai', 'bangalore', 'pune', 'chennai', 'gurgaon', 'hyderabad', 'delhi', 'noida', 'greater noida', 'ghaziabad', 'faridabad']
+    index = cities.index(city)
+
+    dropdown_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "react-select-2-input")))
+    time.sleep(3) 
+    dropdown_input.send_keys(Keys.ARROW_UP)
+
+    for _ in range(index):
+        dropdown_input.send_keys(Keys.ARROW_DOWN)
+        time.sleep(0.5) 
+
+    dropdown_input.send_keys(Keys.ENTER)
+
+
+    form_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="listPageSearchLocality"]')))
+    form_element.click()
+    form_element.send_keys(locality)
+
+    time.sleep(2)
+    form_element.send_keys(Keys.ARROW_DOWN)
+    form_element.send_keys(Keys.ENTER)
+
+    time.sleep(2)  
+    submit_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/div/div[1]/div[4]/button')))
+    submit_btn.click()
+
+    WebDriverWait(driver, 10).until(EC.url_changes(url))
+
+    url_nobroker = driver.current_url
+
+    driver.quit()
+
+    response = requests.get(url_nobroker)
     soup = BeautifulSoup(response.content, "html.parser")
 
     listings = soup.find_all("div", class_="bg-white rounded-4 bg-clip-padding overflow-hidden my-1.2p mx-0.5p tp:border-b-0 shadow-defaultCardShadow tp:shadow-cardShadow tp:mt-0.5p tp:mx-0 tp:mb:1p hover:cursor-pointer nb__2_XSE")
@@ -59,13 +117,40 @@ def apicall_nobroker(request):
         print("More details Link:", link)
         print("Square Footage:", sq_foot)
         print("Image Links:", image_url)
-        print()
+
         
-def apicall_99acres(requests):
+def apicall_99acres(city,locality):
 
-    url = "https://www.99acres.com/search/property/buy/hyderabad?city=269&preference=S&area_unit=1&res_com=R"
+        
+    options = Options()
+    options.headless = True
+    options.add_argument('window-size=1200x800')
+    driver = webdriver.Chrome(options=options)
 
-    response = requests.get(url)
+    place = city + " " + locality
+
+    url = "https://www.99acres.com/"
+    driver.get(url)
+    driver.maximize_window()
+
+    form_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="keyword2"]')))
+    form_element.click()
+    form_element.send_keys(place)
+    form_element.send_keys(Keys.ARROW_DOWN)
+    form_element.send_keys(Keys.ENTER)
+
+    time.sleep(5)  
+    submit_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="inPageSearchForm"]/div[2]/div/div/div[1]/div[3]/button')))
+    submit_btn.click()
+
+    WebDriverWait(driver, 10).until(EC.url_changes(url))
+
+    url_99acres = driver.current_url
+    print("Current URL:", url_99acres)
+
+    driver.quit()
+
+    response = requests.get(url_99acres)
     soup = BeautifulSoup(response.content, "html.parser")
     listings = soup.find_all("div", class_="projectTuple__descCont")
 
@@ -82,13 +167,6 @@ def apicall_99acres(requests):
         link_element = listing.find("a", class_="projectTuple__projectName")
         link = link_element["href"]
 
-        """usp_description_element = listing.find('span', class_='caption_subdued_medium configurationCards__cardAreaSubHeadingOne')
-        if usp_description_element:
-            usp_description = usp_description_element.get_text(strip=True)
-            sq_foot = usp_description.split()[0]  # Extract the first word, which represents the square footage
-        else:
-            sq_foot = "N/A" """
-
         details_response = requests.get(link)
         details_soup = BeautifulSoup(details_response.content, "html.parser")
 
@@ -97,7 +175,6 @@ def apicall_99acres(requests):
             sq_foot_range = usp_description_element.get_text(strip=True)
         else:
             sq_foot_range = "N/A"
-
 
         image_elements = details_soup.find_all('div', class_='PhotonCard__photonDisp')
         image_urls = [img.find('img')['src'] for img in image_elements]
@@ -109,33 +186,43 @@ def apicall_99acres(requests):
         print("Square Footage:", sq_foot_range)
         print("Image Links:", image_urls)
         print()
-def apicall_squareyards(requests):
-         
-        url = "https://www.squareyards.com/sale/property-for-sale-in-hyderabad"
 
-        response = requests.get(url)
-        soup = BeautifulSoup(response.content, "html.parser")
+            
+def apicall_squareyards(city,locality):
+            
+    import requests
+    from bs4 import BeautifulSoup
 
-        listings = soup.find_all("div", class_="tlBx")
 
-        for listing in listings:
-            title = listing.find("div", class_="tileProjectName").text.strip()
-            price = listing.find("span", class_="tlPrc DSE_Resale_D18").text.strip()
-            location = listing.find("span", class_="DSE_Resale_D18").find_all(text=True, recursive=False)[-1].strip()
-            sq_foot = listing.find("div", class_="tlSqFt DSE_Resale_D18").text.strip()
 
-            details_button = listing.find("button", onclick=lambda x: x and "helperJS.goToURL" in x)
-            link = details_button["onclick"].split("'")[1] if details_button else None
+    city1 = city.replace(" ", "-")
+    locality1 = locality.replace(" ", "-")
 
-            image_container = listing.find("div", class_="tileProjectImgBox thisss smArrow DSE_Resale_D17")
-            if image_container:
-                image_tags = image_container.find_all("img", class_="img-responsive bx-item lazy DSE_Resale_D17")
-                image_links = [img["data-src"] for img in image_tags]
+    url = f"https://www.squareyards.com/sale/property-for-sale-in-{locality1.lower()}-{city1.lower()}"
 
-            print("Title:", title)
-            print("Price:", price)
-            print("Location:", location)
-            print("More details Link:", link)
-            print("Square Footage:", sq_foot)
-            print("Image Links:", image_links)
-            print()
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    listings = soup.find_all("div", class_="tlBx")
+
+    for listing in listings:
+        title = listing.find("div", class_="tileProjectName").text.strip()
+        price = listing.find("span", class_="tlPrc DSE_Resale_D18").text.strip()
+        location = listing.find("span", class_="DSE_Resale_D18").find_all(text=True, recursive=False)[-1].strip()
+        sq_foot = listing.find("div", class_="tlSqFt DSE_Resale_D18").text.strip()
+
+        details_button = listing.find("button", onclick=lambda x: x and "helperJS.goToURL" in x)
+        link = details_button["onclick"].split("'")[1] if details_button else None
+
+        image_container = listing.find("div", class_="tileProjectImgBox thisss smArrow DSE_Resale_D17")
+        if image_container:
+            image_tags = image_container.find_all("img", class_="img-responsive bx-item lazy DSE_Resale_D17")
+            image_links = [img["data-src"] for img in image_tags]
+
+        print("Title:", title)
+        print("Price:", price)
+        print("Location:", location)
+        print("More details Link:", link)
+        print("Square Footage:", sq_foot)
+        print("Image Links:", image_links)
+        print()
