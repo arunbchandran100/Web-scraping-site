@@ -1,6 +1,19 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
-# Create your views here.
+from rest_framework.views import APIView
+from rest_framework.response import Response
+
+class SubmitFormAPIView(APIView):
+    def post(self, request):
+        data = request.data
+        city = data.get('city')
+        place = data.get('place')
+        print(city,place)
+        # Return a JSON response
+        return Response({'success': True, 'message': 'Form data submitted successfully.'})
+
+
 def apicall_nobroker(request):
 
     url = "https://www.nobroker.in/property/sale/chennai/Chennai%20Apollo?searchParam=W3sibGF0IjoxMi44NjA2MzUyLCJsb24iOjc5Ljk0NDU2ODEsInBsYWNlSWQiOiJDaElKZXpkeDRMN3hVam9SMHVuMXJlRkxBVmMiLCJwbGFjZU5hbWUiOiJDaGVubmFpIEFwb2xsbyIsInNob3dNYXAiOmZhbHNlfV0="
