@@ -47,26 +47,19 @@ function Card2() {
       <h2 className="search-heading">Real estate search just a click away</h2> {/* Updated heading */}
     <form onSubmit={handleSubmit}>
       {/* Your form inputs */}
-      <div className='box'>
       <input
         type="text"
         name="city"
         value={formData.name}
         onChange={handleChange}
-        placeholder='Ciity'
       />
-      </div>
-      <div className='box'>
       <input
         type="text"
         name="place"
         value={formData.email}
         onChange={handleChange}
-        placeholder='Plaace'
       />
       {/* ... */}
-
-      </div>
        <button type="submit" className="search-button">Search</button>
     </form>
     </div>
