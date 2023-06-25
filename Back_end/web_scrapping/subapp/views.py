@@ -1,6 +1,8 @@
 from django.shortcuts import render
 import requests
 from bs4 import BeautifulSoup
+from django.http import JsonResponse
+        
 # from .models import Homepage
 
 def Homepage(request):
@@ -15,15 +17,15 @@ def Homepage(request):
 def index(request):
     return render(request,'index.html')
 
+
 def apicall_nobroker(request):
-
     url = "https://www.nobroker.in/property/sale/chennai/Chennai%20Apollo?searchParam=W3sibGF0IjoxMi44NjA2MzUyLCJsb24iOjc5Ljk0NDU2ODEsInBsYWNlSWQiOiJDaElKZXpkeDRMN3hVam9SMHVuMXJlRkxBVmMiLCJwbGFjZU5hbWUiOiJDaGVubmFpIEFwb2xsbyIsInNob3dNYXAiOmZhbHNlfV0="
-
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
 
     listings = soup.find_all("div", class_="bg-white rounded-4 bg-clip-padding overflow-hidden my-1.2p mx-0.5p tp:border-b-0 shadow-defaultCardShadow tp:shadow-cardShadow tp:mt-0.5p tp:mx-0 tp:mb:1p hover:cursor-pointer nb__2_XSE")
 
+    results = []
     for listing in listings:
         title = listing.find("h2", class_="heading-6 flex items-center font-semi-bold m-0").text.strip()
         price = listing.find("div", class_="font-semi-bold heading-6").text.strip()
@@ -40,25 +42,34 @@ def apicall_nobroker(request):
         details_soup = BeautifulSoup(details_response.content, "html.parser")
 
         meta_tag = details_soup.find("meta", property="og:image")
+        image_url = meta_tag["content"] if meta_tag else ""
 
-        if meta_tag is not None:
-            image_url = meta_tag["content"]
+        result = {
+            "title": title,
+            "price": price,
+            "location": location,
+            "link": link,
+            "square_footage": sq_foot,
+            "image_url": image_url
+        }
+        results.append(result)
+
+    return JsonResponse(results, safe=False)
+
         
-        print("Title:", title)
-        print("Price:", price)
-        print("Location:", location)
-        print("More details Link:", link)
-        print("Square Footage:", sq_foot)
-        print("Image Links:", image_url)
-        print()
-        
-def apicall_99acres(requests):
+
+
+def apicall_99acres(request):
+    import requests
+    from bs4 import BeautifulSoup
 
     url = "https://www.99acres.com/search/property/buy/hyderabad?city=269&preference=S&area_unit=1&res_com=R"
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     listings = soup.find_all("div", class_="projectTuple__descCont")
+
+    data = []
 
     for listing in listings:
         project_name_element = listing.find("a", class_="projectTuple__projectName")
@@ -73,13 +84,6 @@ def apicall_99acres(requests):
         link_element = listing.find("a", class_="projectTuple__projectName")
         link = link_element["href"]
 
-        """usp_description_element = listing.find('span', class_='caption_subdued_medium configurationCards__cardAreaSubHeadingOne')
-        if usp_description_element:
-            usp_description = usp_description_element.get_text(strip=True)
-            sq_foot = usp_description.split()[0]  # Extract the first word, which represents the square footage
-        else:
-            sq_foot = "N/A" """
-
         details_response = requests.get(link)
         details_soup = BeautifulSoup(details_response.content, "html.parser")
 
@@ -89,44 +93,59 @@ def apicall_99acres(requests):
         else:
             sq_foot_range = "N/A"
 
-
         image_elements = details_soup.find_all('div', class_='PhotonCard__photonDisp')
         image_urls = [img.find('img')['src'] for img in image_elements]
 
-        print("Title:", project_name)
-        print("Price:", price)
-        print("Location:", location)
-        print("More details Link:", link)
-        print("Square Footage:", sq_foot_range)
-        print("Image Links:", image_urls)
-        print()
-def apicall_squareyards(requests):
-         
-        url = "https://www.squareyards.com/sale/property-for-sale-in-hyderabad"
+        listing_data = {
+            "Title": project_name,
+            "Price": price,
+            "Location": location,
+            "More details Link": link,
+            "Square Footage": sq_foot_range,
+            "Image Links": image_urls
+        }
 
-        response = requests.get(url)
-        soup = BeautifulSoup(response.content, "html.parser")
+        data.append(listing_data)
 
-        listings = soup.find_all("div", class_="tlBx")
+    return JsonResponse(data, safe=False)
 
-        for listing in listings:
-            title = listing.find("div", class_="tileProjectName").text.strip()
-            price = listing.find("span", class_="tlPrc DSE_Resale_D18").text.strip()
-            location = listing.find("span", class_="DSE_Resale_D18").find_all(text=True, recursive=False)[-1].strip()
-            sq_foot = listing.find("div", class_="tlSqFt DSE_Resale_D18").text.strip()
 
-            details_button = listing.find("button", onclick=lambda x: x and "helperJS.goToURL" in x)
-            link = details_button["onclick"].split("'")[1] if details_button else None
+        
 
-            image_container = listing.find("div", class_="tileProjectImgBox thisss smArrow DSE_Resale_D17")
-            if image_container:
-                image_tags = image_container.find_all("img", class_="img-responsive bx-item lazy DSE_Resale_D17")
-                image_links = [img["data-src"] for img in image_tags]
 
-            print("Title:", title)
-            print("Price:", price)
-            print("Location:", location)
-            print("More details Link:", link)
-            print("Square Footage:", sq_foot)
-            print("Image Links:", image_links)
-            print()
+def apicall_squareyards(request):
+    url = "https://www.squareyards.com/sale/property-for-sale-in-hyderabad"
+
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+
+    listings = soup.find_all("div", class_="tlBx")
+
+    scraped_data = []
+
+    for listing in listings:
+        title = listing.find("div", class_="tileProjectName").text.strip()
+        price = listing.find("span", class_="tlPrc DSE_Resale_D18").text.strip()
+        location = listing.find("span", class_="DSE_Resale_D18").find_all(text=True, recursive=False)[-1].strip()
+        sq_foot = listing.find("div", class_="tlSqFt DSE_Resale_D18").text.strip()
+
+        details_button = listing.find("button", onclick=lambda x: x and "helperJS.goToURL" in x)
+        link = details_button["onclick"].split("'")[1] if details_button else None
+
+        image_container = listing.find("div", class_="tileProjectImgBox thisss smArrow DSE_Resale_D17")
+        if image_container:
+            image_tags = image_container.find_all("img", class_="img-responsive bx-item lazy DSE_Resale_D17")
+            image_links = [img["data-src"] for img in image_tags]
+
+        scraped_item = {
+            "Title": title,
+            "Price": price,
+            "Location": location,
+            "More details Link": link,
+            "Square Footage": sq_foot,
+            "Image Links": image_links
+        }
+
+        scraped_data.append(scraped_item)
+
+    return JsonResponse(scraped_data, safe=False)
