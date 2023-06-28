@@ -50,6 +50,8 @@ class SubmitFormAPIView(APIView):
         data = request.data
         city = data.get('city')
         locality= data.get('place')
+        city = city.lower()
+        locality = locality.lower()
         print(locality, city)
 
         # Call the functions sequentially with delays
@@ -133,11 +135,9 @@ def get_data(request):
 
 def apicall_nobroker(request):
 
-    city = city.lower()
-    locality = locality.lower()
 
     options = Options()
-    options.headless = False
+    options.headless = True
     options.add_argument('window-size=1200x800')
     driver = webdriver.Chrome(options=options)
     options.add_argument("--disable-notifications") 
