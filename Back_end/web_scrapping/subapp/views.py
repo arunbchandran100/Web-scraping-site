@@ -8,7 +8,25 @@ from django.shortcuts import render
 from .models import Listing
 import time
 import logging
-
+import requests
+from bs4 import BeautifulSoup
+import time
+import logging
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+import requests
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
@@ -23,16 +41,16 @@ from rest_framework.response import Response
 import time
 
 locality = None
-place = None
+city = None
 
 class SubmitFormAPIView(APIView):
 
     def post(self, request):
-        global locality,place
+        global locality,city
         data = request.data
-        locality = data.get('city')
-        place = data.get('place')
-        print(locality, place)
+        city = data.get('city')
+        locality= data.get('place')
+        print(locality, city)
 
         # Call the functions sequentially with delays
         #square_data = apicall_squareyards(self,city=place,locality=locality)
@@ -114,8 +132,62 @@ def get_data(request):
 
 
 def apicall_nobroker(request):
-    url = "https://www.nobroker.in/property/sale/chennai/Chennai%20Apollo?searchParam=W3sibGF0IjoxMi44NjA2MzUyLCJsb24iOjc5Ljk0NDU2ODEsInBsYWNlSWQiOiJDaElKZXpkeDRMN3hVam9SMHVuMXJlRkxBVmMiLCJwbGFjZU5hbWUiOiJDaGVubmFpIEFwb2xsbyIsInNob3dNYXAiOmZhbHNlfV0="
-    response = requests.get(url)
+
+    city = city.lower()
+    locality = locality.lower()
+
+    options = Options()
+    options.headless = False
+    options.add_argument('window-size=1200x800')
+    driver = webdriver.Chrome(options=options)
+    options.add_argument("--disable-notifications") 
+    driver = webdriver.Chrome(options=options)
+
+    url = "https://www.nobroker.in/"
+    driver.get(url)
+    driver.maximize_window()
+
+    rent_button = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/div/div[1]/div[3]/div[1]')))
+    rent_button.click()
+
+    dropdown_button = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CLASS_NAME, "nb-select__control")))
+    dropdown_button.click()
+
+    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "nb-select__menu-list")))
+
+    cities = ['mumbai', 'bangalore', 'pune', 'chennai', 'gurgaon', 'hyderabad', 'delhi', 'noida', 'greater noida', 'ghaziabad', 'faridabad']
+    index = cities.index(city)
+
+    dropdown_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, "react-select-2-input")))
+    time.sleep(3) 
+    dropdown_input.send_keys(Keys.ARROW_UP)
+
+    for _ in range(index):
+        dropdown_input.send_keys(Keys.ARROW_DOWN)
+        time.sleep(0.5) 
+
+    dropdown_input.send_keys(Keys.ENTER)
+
+
+    form_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="listPageSearchLocality"]')))
+    form_element.click()
+    form_element.send_keys(locality)
+
+    time.sleep(2)
+    form_element.send_keys(Keys.ARROW_DOWN)
+    form_element.send_keys(Keys.ENTER)
+
+    time.sleep(2)  
+    submit_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="app"]/div/div/div[1]/div[4]/button')))
+    submit_btn.click()
+
+    WebDriverWait(driver, 10).until(EC.url_changes(url))
+
+    url_nobroker = driver.current_url
+
+    driver.quit()
+
+    response = requests.get(url_nobroker)
     soup = BeautifulSoup(response.content, "html.parser")
 
     listings = soup.find_all("div", class_="bg-white rounded-4 bg-clip-padding overflow-hidden my-1.2p mx-0.5p tp:border-b-0 shadow-defaultCardShadow tp:shadow-cardShadow tp:mt-0.5p tp:mx-0 tp:mb:1p hover:cursor-pointer nb__2_XSE")
@@ -156,12 +228,36 @@ def apicall_nobroker(request):
 
         
 def apicall_99acres(request):
-    import requests
-    from bs4 import BeautifulSoup
+        
+    options = Options()
+    options.headless = True
+    options.add_argument('window-size=1200x800')
+    driver = webdriver.Chrome(options=options)
 
-    url = "https://www.99acres.com/search/property/buy/hyderabad?city=269&preference=S&area_unit=1&res_com=R"
+    place = city + " " + locality
 
-    response = requests.get(url)
+    url = "https://www.99acres.com/"
+    driver.get(url)
+    driver.maximize_window()
+
+    form_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="keyword2"]')))
+    form_element.click()
+    form_element.send_keys(place)
+    form_element.send_keys(Keys.ARROW_DOWN)
+    form_element.send_keys(Keys.ENTER)
+
+    time.sleep(5)  
+    submit_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="inPageSearchForm"]/div[2]/div/div/div[1]/div[3]/button')))
+    submit_btn.click()
+
+    WebDriverWait(driver, 10).until(EC.url_changes(url))
+
+    url_99acres = driver.current_url
+    print("Current URL:", url_99acres)
+
+    driver.quit()
+
+    response = requests.get(url_99acres)
     soup = BeautifulSoup(response.content, "html.parser")
     listings = soup.find_all("div", class_="projectTuple__descCont")
 
@@ -215,8 +311,10 @@ import json
 
 def apicall_squareyards(request):
 
-    test="kochi"
-    url = "https://www.squareyards.com/sale/property-for-sale-in-"+locality
+    city1 = city.replace(" ", "-")
+    locality1 = locality.replace(" ", "-")
+
+    url = f"https://www.squareyards.com/sale/property-for-sale-in-{locality1.lower()}-{city1.lower()}"
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
