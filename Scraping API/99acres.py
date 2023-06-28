@@ -1,10 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import time
-import logging
+import concurrent.futures
 
-
-import requests
 city = "bangalore"
 locality = "whitefield"
 place = locality + " " + city
@@ -45,11 +42,7 @@ else:
 print("Constructed URL for 99acres:", url_99acres)
 
 
-response = requests.get(url_99acres)
-soup = BeautifulSoup(response.content, "html.parser")
-listings = soup.find_all("div", class_="projectTuple__descCont")
-
-for listing in listings:
+def scrape_listing(listing):
     project_name_element = listing.find("a", class_="projectTuple__projectName")
     project_name = project_name_element.get_text(strip=True)
 
@@ -63,7 +56,7 @@ for listing in listings:
     link = link_element["href"]
 
     details_response = requests.get(link)
-    details_soup = BeautifulSoup(details_response.content, "html.parser")
+    details_soup = BeautifulSoup(details_response.content, "lxml")
 
     usp_description_element = details_soup.find('span', class_='caption_subdued_medium configurationCards__cardAreaSubHeadingOne')
     if usp_description_element:
@@ -74,10 +67,34 @@ for listing in listings:
     image_elements = details_soup.find_all('div', class_='PhotonCard__photonDisp')
     image_urls = [img.find('img')['src'] for img in image_elements]
 
-    print("Title:", project_name)
-    print("Price:", price)
-    print("Location:", location)
-    print("More details Link:", link)
-    print("Square Footage:", sq_foot_range)
-    print("Image Links:", image_urls)
-    print()
+    return {
+        "Title": project_name,
+        "Price": price,
+        "Location": location,
+        "More details Link": link,
+        "Square Footage": sq_foot_range,
+        "Image Links": image_urls
+    }
+
+
+response = requests.get(url_99acres)
+soup = BeautifulSoup(response.content, "lxml")
+listings = soup.find_all("div", class_="projectTuple__descCont")
+
+scraped_data = []
+
+# Create a ThreadPoolExecutor with a specified number of workers
+with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
+    # Submit scraping tasks to the executor in parallel
+    futures = [executor.submit(scrape_listing, listing) for listing in listings]
+
+    # Process the scraped results as they complete
+    for future in concurrent.futures.as_completed(futures):
+        result = future.result()
+        scraped_data.append(result)
+        # Print or process the scraped result as needed
+        #print(result)
+        #print()
+
+# Print the final scraped data
+print("Scraped Data:", scraped_data)
