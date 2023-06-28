@@ -82,10 +82,10 @@ class SubmitFormAPIView(APIView):
 def aggregate_api_calls(request):
     squareyards_data = apicall_squareyards(request)
     acres99_data = apicall_99acres(request)
-    nobroker_data = apicall_nobroker(request)
+    #nobroker_data = apicall_nobroker(request)
     
     # Combine all data into one list
-    combined_data = squareyards_data + acres99_data + nobroker_data
+    combined_data = squareyards_data + acres99_data# + nobroker_data
 
     return JsonResponse(combined_data, safe=False)
 
