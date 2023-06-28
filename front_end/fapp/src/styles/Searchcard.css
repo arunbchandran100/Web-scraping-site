@@ -1,0 +1,44 @@
+.rechargephoto {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  background-image:url("https://images.unsplash.com/photo-1582407947304-fd86f028f716?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cmVhbCUyMGVzdGF0ZXxlbnwwfHwwfHx8MA%3D%3D&w=1000&q=80");
+  background-size: cover;
+  background-position: center;
+  height:300px;
+}
+
+.rechargephoto form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #717171;
+}
+
+.rechargephoto .box {
+  margin-right: 10px;
+}
+
+.rechargephoto input[type="text"],
+.rechargephoto button {
+  background-color: #FFFFFF;
+  border: none;
+  padding: 8px;
+  color: black;
+}
+
+.rechargephoto input[type="text"] {
+  width: 200px;
+}
+
+.rechargephoto button {
+  cursor: pointer;
+  background-color: #96C2DB;
+  color: white;
+}
+
+.rechargephoto button:hover {
+  background-color: #E5EDF1;
+}
