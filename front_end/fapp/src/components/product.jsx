@@ -1,5 +1,8 @@
 
 import {useState,useEffect} from "react";
+import "../styles/product.css";
+import {useNavigate} from "react-router-dom"
+
 export function Products(props) {
   const [productData, setProductData] = useState([]);
 
@@ -38,7 +41,7 @@ console.log(productData)
             <p className='productPrice'>Price: {product.price}</p>
             <p className='productLocation'>Location: {product.location}</p>
             <p className='productSquareFootage'>Square Footage: {product.square_footage}</p>
-            <a href={product.more_details_link} className='productMoreDetailsLink'>More Details</a>
+            <a href={product.more_details_link} className='productMoreDetailsLink' target="_blank" rel="noopener noreferrer">More Details</a>
           </div>
         </div>
       ))}

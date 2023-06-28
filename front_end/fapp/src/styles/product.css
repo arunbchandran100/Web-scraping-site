@@ -17,30 +17,26 @@ html {
 .productList {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-around;
   margin-top: 5rem;
 }
 
 .productCard {
   position: relative;
   background-color: rgb(210, 227, 238);
-  margin: 10rem;
-  flex-basis: calc(50% - 20rem);
+  margin: 1rem;
+  flex-basis: calc(33% - 2rem); /* change 50% to 33% to allow for 3 cards in a row */
   max-width: 30rem;
   max-height: 50rem;
   transition: 0.2s;
-  margin-top: 2rem;
-  margin-bottom: 2rem;
 }
 
-.productCard:nth-child(3n+1) {
-  clear: left;
-}
-
+/* remove nth-child(3n+1) rule, it's no longer needed */
 .productCard:hover {
   transform: translateY(-0.5rem);
   box-shadow: 0.5rem 0.75rem 1.5rem #bbbbbb;
 }
+
 
 .productImage {
   margin-top: 0rem;
