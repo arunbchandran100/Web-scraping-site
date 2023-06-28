@@ -60,7 +60,7 @@ function Card2() {
         name="city"
         value={formData.city}
         onChange={(e)=>handleChange(e,"city")}
-        placeholder='Ciity'
+        placeholder='City'
       />
       </div>
       <div className='box'>
@@ -69,7 +69,7 @@ function Card2() {
         name="place"
         value={formData.place}
         onChange={(e)=>handleChange(e,"place")}
-        placeholder='Plaace'
+        placeholder='Place'
       />
       {/* ... */}
 

@@ -2,43 +2,48 @@ import requests
 from bs4 import BeautifulSoup
 import time
 import logging
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.keys import Keys
 
 
-options = Options()
-options.headless = True
-options.add_argument('window-size=1200x800')
-driver = webdriver.Chrome(options=options)
-
+import requests
 city = "bangalore"
 locality = "whitefield"
-place = city + " " + locality
+place = locality + " " + city
+preference = "S"
+rescom = "R"
+format_type = "APP"
+search_type = "COWORKING"
+page_name = "homePage"
+platform = "DESKTOP"
 
-url = "https://www.99acres.com/"
-driver.get(url)
-driver.maximize_window()
+url = f"https://s.99acres.com/api/autocomplete/suggest?term={place}&PREFERENCE={preference}&RESCOM={rescom}&FORMAT={format_type}&SEARCH_TYPE={search_type}&CITY=&landmarkRequired=true&pageName={page_name}&platform={platform}"
 
-form_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="keyword2"]')))
-form_element.click()
-form_element.send_keys(place)
-form_element.send_keys(Keys.ARROW_DOWN)
-form_element.send_keys(Keys.ENTER)
+response = requests.get(url)
+data = response.json()
 
-time.sleep(5)  
-submit_btn = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, '//*[@id="inPageSearchForm"]/div[2]/div/div/div[1]/div[3]/button')))
-submit_btn.click()
+# Extract data from the first suggestion
+first_suggestion = data['suggest'][0]
+name = first_suggestion['NAME']
+property_count = first_suggestion['PROPERTY_COUNT']
+marker = first_suggestion['MARKER']
+city1 = first_suggestion['CITY']
+preference = first_suggestion['PREFERENCE']
+rescom = first_suggestion['RESCOM']
+e_type = first_suggestion['E_TYPE']
 
-WebDriverWait(driver, 10).until(EC.url_changes(url))
+# Replace spaces with hyphens in the place name
+name = name.replace(" ", "-")
 
-url_99acres = driver.current_url
-print("Current URL:", url_99acres)
+# Constructing the URL
+base_url = "https://www.99acres.com/search/property/buy/"
 
-driver.quit()
+if e_type == "City":
+    url_99acres = f"{base_url}{name.lower()}?city={city1}&preference={preference}&area_unit=1&res_com={rescom}"
+else:
+    locality_id = marker.split("_LOCALITY_")[-1]
+    url_99acres = f"{base_url}{name.lower()}?city={city1}&locality={locality_id}&preference={preference}&area_unit=1&res_com={rescom}"
+
+print("Constructed URL for 99acres:", url_99acres)
+
 
 response = requests.get(url_99acres)
 soup = BeautifulSoup(response.content, "html.parser")

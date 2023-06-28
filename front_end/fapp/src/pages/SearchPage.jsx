@@ -9,13 +9,6 @@ function SearchPage() {
     <div className="Home">
       <Navbar />
       <Product/>
-      <div className="container">
-        search ihsb;hbcso;aS;OBXO;scoA'SCHOshc'oH'OSCHOshcoHS'OCHosch'oqhscohQ'OSCH'PJBCS JascbxhiaBC;IBa;ibcx;ABS;XBosbcoBGASOCgsdiqgdiqgwigqigdiqgwd 
-        qkhv;qsxvhiqvwxiqibxqwbxqxgbqgbxhqgbxibqwbxqbwxbqwxbikqbxikqb
-        ojscb;bsco'NACNJDCBDLSJC;ISBDCNABCINALJ CINASDCBSNDC;SJNCIHSABDCOADAHSVCILA;ICBLIAbscb wjhbdbc;ib
-        javscivahscvhqbsvcibqscbiscibashbcahscbkhasbckhabskcbakscbkasbckbaol
-        akscbkacskakscbljb
-      </div>
       <Footer />
     </div>
   ); 
