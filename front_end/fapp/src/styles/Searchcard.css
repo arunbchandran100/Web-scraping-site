@@ -47,3 +47,9 @@ color: black;
 .rechargephoto button:hover {
   background-color: #e5edf1;
 }
+
+.input-box {
+  width: 600px;
+  height: 40px;
+}
+
