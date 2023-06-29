@@ -9,10 +9,6 @@
   height: 300px;
   padding: 20px; /* Add padding for better spacing */
 }
-.rechargephoto h2
-{
-color: black;
-}
 
 .rechargephoto form {
   display: flex;
@@ -50,3 +46,9 @@ color: black;
 .rechargephoto button:hover {
   background-color: #e5edf1;
 }
+
+.input-box {
+  width: 600px;
+  height: 40px;
+}
+

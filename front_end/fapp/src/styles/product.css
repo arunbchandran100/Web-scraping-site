@@ -21,27 +21,6 @@ html {
   justify-content: space-around;
   margin-top: 5rem;
 }
-.loading {
-  background-color: lightblue;
-  display: flex;
-  font-size: 45px;
-  color: black;
-  justify-content: center;
-  align-items: center;
-  height: 600px;
-  width: 1530px;
-}
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-color: lightblue;
-}
-.loading img {
-  max-width: 200px;
-  max-height: 200px;
-}
 
 .loading {
   background-color: lightblue;
