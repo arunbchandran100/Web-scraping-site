@@ -20,12 +20,21 @@ html {
   justify-content: space-around;
   margin-top: 5rem;
 }
-
+.loading {
+  background-color: lightblue;
+  display: flex;
+  font-size: 45px;
+  color: black;
+  justify-content: center;
+  align-items: center;
+  height: 600px;
+  width: 1530px;
+}
 .productCard {
   position: relative;
   background-color: rgb(210, 227, 238);
   margin: 1rem;
-  flex-basis: calc(33% - 2rem); /* change 50% to 33% to allow for 3 cards in a row */
+  flex-basis: calc(50% - 2rem); /* change 50% to 33% to allow for 3 cards in a row */
   max-width: 30rem;
   max-height: 50rem;
   transition: 0.2s;

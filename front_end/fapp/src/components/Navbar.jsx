@@ -8,7 +8,7 @@ export default function Navbar() {
   return (
     <nav className="navigation">
       <a href="/" className="brand-name">
-        Website
+      Online property scanner
       </a>
       <button
         className="hamburger"
