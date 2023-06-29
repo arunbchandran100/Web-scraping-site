@@ -30,7 +30,10 @@ export function Products(props) {
   return (
     <div className='productList'>
       {isLoading ? ( // Render the loading page if isLoading is true
-        <div className="loading">Loading...</div>
+        <div className="loading">
+          <img src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" alt="Loading..." className='loadingImage' />
+        
+        </div>
       ) : (
         productData.map((product, index) => (
           <div key={index} className='productCard'>

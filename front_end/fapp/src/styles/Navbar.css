@@ -11,13 +11,20 @@
 	box-shadow: 0 2px 2px 2px rgba(9, 9, 9, 0.23);
   }
   
+  .logo {
+	width: 90px; /* Adjust the width according to your desired size */
+	height: auto;
+	margin-right: 8px; /* Adjust the spacing between the logo and text */
+  }
+  
   /* Brand name */
   .brand-name {
 	text-decoration: none;
 	color: rgb(254, 251, 251);
-	font-size: 1.3rem;
+	font-size: 2rem; /* Adjust the font size according to your needs */
 	margin-left: 1rem;
   }
+  
   
   .brand-name:hover {
 	color: blue; 
@@ -43,7 +50,10 @@
 	display: block;
 	width: 100%;
 	color: white;
+	font-size: 1.8rem; /* Increase the font size to make the button larger */
+	padding: 1rem 2rem; /* Adjust the padding to increase the button size */
   }
+  
   
   .navigation-menu li a:hover {
 	color: blue; 
