@@ -1,23 +1,15 @@
 import React, { useRef } from "react";
 import "../styles/Navbar.css";
-import logo from "../images/finallogo.jpg";
 import { useState } from "react";
-
+import logo from "../images/logo_scrap.jpg"
 export default function Navbar() {
   const [isNavExpanded, setIsNavExpanded] = useState(false);
 
   return (
     <nav className="navigation">
       <a href="/" className="brand-name">
-<<<<<<< Updated upstream
-      Online property scanner
+      <img src={logo} alt="Logo" className="logo" />
       </a>
-=======
-  <img src={logo} alt="Logo" className="logo" />
-  <span className="brand-text">Online Property Scanner</span>
-</a>
-
->>>>>>> Stashed changes
       <button
         className="hamburger"
         onClick={() => {
@@ -45,10 +37,7 @@ export default function Navbar() {
       >
         <ul>
           <li>
-            <a href="/home">Home</a>
-          </li>
-          <li>
-            <a href="/signup">Login / Create account</a>
+            <a href="/">Home</a>
           </li>
         </ul>
       </div>

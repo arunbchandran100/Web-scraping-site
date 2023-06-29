@@ -21,7 +21,6 @@ export function Products(props) {
 
   console.log(productData);
 
-<<<<<<< Updated upstream
   const navigate = useNavigate();
 
   const handleMoreDetailsClick = (link) => {
@@ -31,15 +30,10 @@ export function Products(props) {
   return (
     <div className='productList'>
       {isLoading ? ( // Render the loading page if isLoading is true
-        <div className="loading">Loading...</div>
-=======
-  return (
-    <div className='productList'>
-      {isLoading ? ( // Render the loading page if isLoading is true
         <div className="loading">
           <img src="https://media.giphy.com/media/jAYUbVXgESSti/giphy.gif" alt="Loading..." className='loadingImage' />
+        
         </div>
->>>>>>> Stashed changes
       ) : (
         productData.map((product, index) => (
           <div key={index} className='productCard'>
@@ -49,11 +43,7 @@ export function Products(props) {
               <p className='productPrice'>Price: {product.price}</p>
               <p className='productLocation'>Location: {product.location}</p>
               <p className='productSquareFootage'>Square Footage: {product.square_footage}</p>
-<<<<<<< Updated upstream
               <button className='productMoreDetailsButton' onClick={() => handleMoreDetailsClick(product.more_details_link)}>More Details</button>
-=======
-              <a href={product.more_details_link} className='productMoreDetailsLink' target="_blank" rel="noopener noreferrer">More Details</a>
->>>>>>> Stashed changes
             </div>
           </div>
         ))

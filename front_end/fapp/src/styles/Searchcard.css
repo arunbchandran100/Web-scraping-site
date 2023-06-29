@@ -38,6 +38,9 @@ color: black;
   box-sizing: border-box; /* Include padding and border in the width calculation */
 }
 
+.rechargephoto h2 {
+  color: black;
+}
 .rechargephoto button {
   cursor: pointer;
   background-color: #96c2db;
