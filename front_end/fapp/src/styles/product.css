@@ -1,3 +1,4 @@
+
 :root {
   --color-grey-primary: #f0f0f0;
   --color-yellow-primary: goldenrod;
@@ -20,16 +21,19 @@ html {
   justify-content: space-around;
   margin-top: 5rem;
 }
+
 .loading {
   background-color: lightblue;
   display: flex;
-  font-size: 45px;
+  font-size: 5rem;
   color: black;
   justify-content: center;
   align-items: center;
-  height: 600px;
-  width: 1530px;
+  height: 100vh;
+  width: 100vw;
 }
+
+
 .productCard {
   position: relative;
   background-color: rgb(210, 227, 238);

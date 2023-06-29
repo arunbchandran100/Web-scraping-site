@@ -21,6 +21,12 @@ export function Products(props) {
 
   console.log(productData);
 
+  const navigate = useNavigate();
+
+  const handleMoreDetailsClick = (link) => {
+    window.open(link, '_blank');
+  };
+
   return (
     <div className='productList'>
       {isLoading ? ( // Render the loading page if isLoading is true
@@ -34,7 +40,7 @@ export function Products(props) {
               <p className='productPrice'>Price: {product.price}</p>
               <p className='productLocation'>Location: {product.location}</p>
               <p className='productSquareFootage'>Square Footage: {product.square_footage}</p>
-              <a href={product.more_details_link} className='productMoreDetailsLink' target="_blank" rel="noopener noreferrer">More Details</a>
+              <button className='productMoreDetailsButton' onClick={() => handleMoreDetailsClick(product.more_details_link)}>More Details</button>
             </div>
           </div>
         ))
