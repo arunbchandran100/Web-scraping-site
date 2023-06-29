@@ -8,7 +8,11 @@ export default function Navbar() {
   return (
     <nav className="navigation">
       <a href="/" className="brand-name">
+<<<<<<< Updated upstream
       Online property scanner
+=======
+        HBRE
+>>>>>>> Stashed changes
       </a>
       <button
         className="hamburger"
