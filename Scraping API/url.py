@@ -1,41 +1,48 @@
 import requests
-from bs4 import BeautifulSoup
+import urllib.parse
+import base64
 
-city = "pune"
-locality = "wakad"
+def get_place_details(hint, city):
+    url = f"https://www.nobroker.in/api/v1/localities/autocomplete/_search?hint={hint}&city={city}&page=default"
+    print(url)
+    response = requests.get(url)
+    
+    try:
+        response.raise_for_status()  # Check for HTTP errors
+        print(response.text)  # Print response text for debugging
+        data = response.json()
+        if data and data.get('predictions'):
+            return data['predictions'][0]  # Get the first prediction
+    except requests.exceptions.HTTPError as err:
+        print(f"HTTP Error occurred: {err}")
+    except requests.exceptions.JSONDecodeError as err:
+        print(f"JSON Decode Error occurred: {err}")
+    
+    return None
 
-city1 = city.replace(" ", "-")
-locality1 = locality.replace(" ", "-")
 
-url = f"https://www.squareyards.com/sale/property-for-sale-in-{locality1.lower()}-{city1.lower()}"
+def create_property_url(place_details):
+    if place_details is None:
+        return None
 
-response = requests.get(url)
-soup = BeautifulSoup(response.content, "html.parser")
+    city = place_details.get('city')
+    locality = place_details.get('structured_formatting', {}).get('main_text')
+    search_param = base64.b64encode(locality.encode('utf-8')).decode('utf-8')
+    place_id = place_details.get('place_id')
 
-listings = soup.find_all("div", class_="tlBx")
+    base_url = "https://www.nobroker.in/property/sale/"
+    url = f"{base_url}{city}/{locality}?searchParam={search_param}&radius=2.0&city={city}&locality={locality}&place_id={place_id}"
 
-scraped_data = []
+    return url
 
-for listing in listings:
-    title = listing.find("div", class_="tileProjectName").text.strip()
-    price = listing.find("span", class_="tlPrc DSE_Resale_D18").text.strip()
-    location = listing.find("span", class_="DSE_Resale_D18").find_all(text=True, recursive=False)[-1].strip()
-    sq_foot = listing.find("div", class_="tlSqFt DSE_Resale_D18").text.strip()
 
-    details_button = listing.find("button", onclick=lambda x: x and "helperJS.goToURL" in x)
-    link = details_button["onclick"].split("'")[1] if details_button else None
+# Example usage
+hint = "whitefield"
+city = "bangalore"
 
-    image_container = listing.find("div", class_="tileProjectImgBox thisss smArrow DSE_Resale_D17")
-    if image_container:
-        image_tags = image_container.find_all("img", class_="img-responsive bx-item lazy DSE_Resale_D17")
-        image_links = [img["data-src"] for img in image_tags]
+place_details = get_place_details(hint, city)
+print(place_details)
 
-    # Print the details
-    print("ID:", len(scraped_data) + 1)
-    print("Title:", title)
-    print("Price:", price)
-    print("Location:", location)
-    print("More Details Link:", link)
-    print("Square Footage:", sq_foot)
-    print("Image URLs:", image_links)
-    print()
+url = create_property_url(place_details)
+print()
+print(url)
