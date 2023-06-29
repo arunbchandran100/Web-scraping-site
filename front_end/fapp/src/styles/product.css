@@ -1,4 +1,7 @@
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 :root {
   --color-grey-primary: #f0f0f0;
   --color-yellow-primary: goldenrod;
@@ -18,6 +21,7 @@ html {
 .productList {
   display: flex;
   flex-wrap: wrap;
+<<<<<<< Updated upstream
   justify-content: space-around;
   margin-top: 5rem;
 }
@@ -45,12 +49,37 @@ html {
 }
 
 /* remove nth-child(3n+1) rule, it's no longer needed */
+=======
+  justify-content: center;
+  margin-top: 5rem;
+}
+
+.productCard {
+  position: relative;
+  background-color: rgb(210, 227, 238);
+  margin: 10rem;
+  flex-basis: calc(50% - 20rem);
+  max-width: 30rem;
+  max-height: 50rem;
+  transition: 0.2s;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.productCard:nth-child(3n+1) {
+  clear: left;
+}
+
+>>>>>>> Stashed changes
 .productCard:hover {
   transform: translateY(-0.5rem);
   box-shadow: 0.5rem 0.75rem 1.5rem #bbbbbb;
 }
 
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 .productImage {
   margin-top: 0rem;
   max-width: 100%;
@@ -108,4 +137,8 @@ html {
 .productSales,
 .productTime {
   font-size: 1.1rem;
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
