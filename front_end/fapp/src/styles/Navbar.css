@@ -24,12 +24,6 @@
 	font-size: 2rem; /* Adjust the font size according to your needs */
 	margin-left: 1rem;
   }
-  .logo {
-	width: 50px; /* Adjust the width according to your logo size */
-	height: auto;
-	margin-right: 8px; /* Adjust the spacing between the logo and text */
-  }
-  
   
   
   .brand-name:hover {
