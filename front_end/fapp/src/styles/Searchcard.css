@@ -9,9 +9,7 @@
   height: 300px;
   padding: 20px; /* Add padding for better spacing */
 }
-h2{
-  color: black;
-}
+
 .rechargephoto form {
   display: flex;
   flex-direction: column; /* Display input fields and button in a column */

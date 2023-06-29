@@ -9,11 +9,6 @@ function SearchPage() {
     <div className="Home">
       <Navbar />
       <Product/>
-<<<<<<< Updated upstream
-=======
-      <div className="container">
-      </div>
->>>>>>> Stashed changes
       <Footer />
     </div>
   ); 
