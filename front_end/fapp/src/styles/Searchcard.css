@@ -9,6 +9,10 @@
   height: 300px;
   padding: 20px; /* Add padding for better spacing */
 }
+.rechargephoto h2
+{
+color: black;
+}
 
 .rechargephoto form {
   display: flex;

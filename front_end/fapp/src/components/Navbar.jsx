@@ -1,5 +1,6 @@
 import React, { useRef } from "react";
 import "../styles/Navbar.css";
+import logo from "../images/finallogo.jpg";
 import { useState } from "react";
 
 export default function Navbar() {
@@ -8,8 +9,15 @@ export default function Navbar() {
   return (
     <nav className="navigation">
       <a href="/" className="brand-name">
+<<<<<<< Updated upstream
       Online property scanner
       </a>
+=======
+  <img src={logo} alt="Logo" className="logo" />
+  <span className="brand-text">Online Property Scanner</span>
+</a>
+
+>>>>>>> Stashed changes
       <button
         className="hamburger"
         onClick={() => {
